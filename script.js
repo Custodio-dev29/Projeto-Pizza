@@ -3,6 +3,7 @@ let modalQt = 1;
 const c = (el) => document.querySelector(el);
 const cs = (el) => document.querySelectorAll(el);
 
+
 pizzaJson.map((item, index) => {
 
     // clona o modelo de visualização
@@ -14,6 +15,8 @@ pizzaJson.map((item, index) => {
     pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$ ${item.price.toFixed(2)}`;
     pizzaItem.querySelector('.pizza-item--name').innerHTML = item.name;
     pizzaItem.querySelector('.pizza-item--desc').innerHTML = item.description;
+
+    //preenchimento modal
     pizzaItem.querySelector('a').addEventListener('click', (e) => {
         e.preventDefault();
 
@@ -42,5 +45,9 @@ pizzaJson.map((item, index) => {
         c('.pizzaWindowArea').style.display = 'flex';
 
     })
+    c('.pizza-area').append(pizzaItem);
+
+
+
     c('.pizza-area').append(pizzaItem);
 });
