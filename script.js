@@ -1,4 +1,6 @@
 let modalQt = 1;
+let cart = [];
+let modalkey = 0;
 
 const c = (el) => document.querySelector(el);
 const cs = (el) => document.querySelectorAll(el);
@@ -22,6 +24,7 @@ pizzaJson.map((item, index) => {
 
         let key = e.target.closest('.pizza-item').getAttribute('data-key');
         modalQt = 1;
+        modalkey = key;
 
         c('.pizzaBig img').src = (pizzaJson[key].img);
         c('.pizzaInfo h1').innerHTML = (pizzaJson[key].name);
@@ -50,4 +53,61 @@ pizzaJson.map((item, index) => {
 
 
     c('.pizza-area').append(pizzaItem);
+});
+
+//eventos do modals fechar
+function closeModal() {
+    c('.pizzaWindowArea').style.opacity = 0;
+    setTimeout(() => {
+        c('.pizzaWindowArea').style.display = 'none';
+    }, 200);
+
+}
+cs('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach((item) => {
+    item.addEventListener('click', closeModal);
+});
+//modals 
+
+c('.pizzaInfo--qtmenos').addEventListener('click', () => {
+    if (modalQt > 1) {
+        modalQt--;
+        c('.pizzaInfo--qt').innerHTML = modalQt;
+    }
+});
+
+c('.pizzaInfo--qtmais').addEventListener('click', () => {
+    modalQt++;
+    c('.pizzaInfo--qt').innerHTML = modalQt;
+
+});
+cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
+    size.addEventListener('click', () => {
+        c('.pizzaInfo--size.selected').classList.remove('selected');
+        size.classList.add('selected')
+    });
+});
+
+c('.pizzaInfo--addButton').addEventListener('click', () => {
+    //qual o a pizza
+    modalkey;
+    // qual o tamanho
+    let size = parseInt(c('.pizzaInfo--size.selected').getAttribute('data-key'));
+    //quantas pizza
+    modalQt;
+    let identifier = pizzaJson[modalkey].id + '@' + size;
+
+    let key = cart.findIndex((item) => item.identifier == identifier);
+
+    if (key > -1) {
+        cart[key].qt += modalQt;
+    } else {
+        cart.push({
+            identifier,
+            id: pizzaJson[modalkey].id,
+            size,
+            qt: modalQt
+        });
+    }
+    closeModal();
+
 });
